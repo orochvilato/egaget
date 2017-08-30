@@ -8,22 +8,60 @@ import re
 from scrapy.crawler import CrawlerProcess
 import locale
 import html2text
+
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
 
-consultations = []
+propositions = []
 arguments = []
 sources = []
+
+def createdir(directory):
+    import os
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 class EGASpider(scrapy.Spider):
     name = "sessions"
     base_url = 'https://www.egalimentation.gouv.fr'
-    start_url = base_url+'/api/projects'
     def start_requests(self):
-        urls = [ self.start_url]
+        projets_url = self.base_url+'/api/projects'
+        articles_url = self.base_url+'/blog'
 
-        for url in urls:
-            request = scrapy.Request(url=url, callback=self.parse_projects)
+        request = scrapy.Request(url=articles_url, callback=self.parse_articles)
+        yield request
+
+        request = scrapy.Request(url=projets_url, callback=self.parse_projects)
+        yield request
+
+
+
+
+    def parse_articles(self, response):
+        for article in response.xpath('//li[contains(@class,"media")]/a/@href'):
+            article_url = self.base_url + article.extract()
+            request = scrapy.Request(url=article_url, callback=self.parse_article)
             yield request
+
+        suivante = response.xpath('//li[not(contains(@class,"disabled"))]/a[contains(@aria-label,"suivante")]/@href')
+        if suivante:
+            pagesuivante_url = self.base_url+suivante[0].extract()
+            request = scrapy.Request(url=pagesuivante_url, callback=self.parse_articles)
+            yield request
+
+    def parse_article(self, response):
+        themes = " | ".join([ a.extract() for a in response.xpath('//a[contains(@href,"/themes/")]/text()')])
+        consultations = " | ".join([a.extract() for a in response.xpath('//div[@class="block"]/ul/li/a/text()')])
+        titre = response.xpath('//div[contains(@class,"container")]/h1/text()')[0].extract()
+        img = response.xpath('//div[contains(@class,"container")]/img/@src')[0].extract()
+        img_url = self.base_url + img
+        img_ext = img[-4:]
+        contenu = themes + '\n' + consultations + '\n\n' + html2text.html2text(response.xpath('//div[contains(@class,"container")]/div[@class="block"]')[0].extract())
+        r = requests.get(img_url)
+
+        with open('articles/%s%s' % (titre,img_ext),'w') as f:
+            f.write(r.content)
+        with open('articles/%s.txt' % (titre),'w') as f:
+            f.write(contenu.encode('utf8'))
 
     def parse_projects(self, response):
         jsonresponse = json.loads(response.body_as_unicode())
@@ -84,7 +122,7 @@ class EGASpider(scrapy.Spider):
         cons = response.meta['consultation']
         cons['contenu'] = html2text.html2text(contribs['opinion']['body'])
 
-        consultations.append(cons)
+        propositions.append(cons)
         for src in contribs['opinion']['sources']:
             sources.append({u'projet':cons[u'projet'],
                               u'themes':cons[u'themes'],
@@ -123,26 +161,49 @@ process.start() # the script will block here until the crawling is finished
 sources.sort(key=lambda x:x['id'])
 arguments.sort(key=lambda x:x['id'])
 propositions.sort(key=lambda x:x['id'])
-fields = [u'themes',u'projet',u'section',u'title',u'contenu',u'sourcesCount', u'votesCountOk', u'updatedAt', u'connectionsCount', u'createdAt', u'votesCountNok', u'author', u'pinned', u'votesCount', u'argumentsCount', u'versionsCount', u'votesCountMitige',u'id']
+fields_props = [u'themes',u'projet',u'section',u'title',u'contenu',u'sourcesCount', u'votesCountOk', u'updatedAt', u'connectionsCount', u'createdAt', u'votesCountNok', u'author', u'pinned', u'votesCount', u'argumentsCount', u'versionsCount', u'votesCountMitige',u'id']
 fields_args = [u'themes',u'projet',u'section',u'title',u'contenu',u'author',u'type',u'created_at',u'updated_at','id']
-sources_args = [u'themes',u'projet',u'section',u'title',u'titre_source',u'lien',u'contenu',u'author',u'created_at',u'updated_at','id']
+fields_srcs = [u'themes',u'projet',u'section',u'title',u'titre_source',u'lien',u'contenu',u'author',u'created_at',u'updated_at','id']
+
+
+def writexls(name,headers,data):
+    from openpyxl import Workbook
+    wb = Workbook()
+    ws = wb.active
+    ws.append(headers)
+    for l in data:
+        ws.append([l[f] for f in headers])
+    wb.save(name)
+
+def createdir(directory):
+    import os
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+createdir('csv')
+createdir('xlsx')
+createdir('articles')
+writexls('xlsx/EGA_arguments.xlsx',fields_args,arguments)
+writexls('xlsx/EGA_propositions.xlsx',fields_props,propositions)
+writexls('xlsx/EGA_sources.xlsx',fields_srcs,sources)
+
 import csv
-with open('EGA_arguments.csv','w') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=fields_args)
+with open('csv/EGA_arguments.csv','w') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=fields_args, delimiter=' ', quotechar='|')
     writer.writeheader()
     for a in arguments:
         writer.writerow(dict((k,v.encode('utf8') if isinstance(v,basestring) else v) for k,v in a.iteritems()))
 
-with open('EGA_sources.csv','w') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=sources_args)
+with open('csv/EGA_sources.csv','w') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=fields_srcs, delimiter=' ', quotechar='|')
     writer.writeheader()
     for s in sources:
         writer.writerow(dict((k,v.encode('utf8') if isinstance(v,basestring) else v) for k,v in s.iteritems()))
 
 
-with open('EGA_propositions.csv', 'w') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=fields)
+with open('csv/EGA_propositions.csv', 'w') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=fields_props, delimiter=' ', quotechar='|')
 
     writer.writeheader()
-    for c in consultations:
+    for c in propositions:
         writer.writerow(dict((k,v.encode('utf8') if isinstance(v,basestring) else v) for k,v in c.iteritems()))

@@ -1,0 +1,72 @@
+Production et distribution
+Comment accompagner la transformation de notre agriculture  ?
+
+**Toutes les cinq secondes, la moissonneuse batteuse de Mathieu Imbault, agriculteur en Beauce, en pilotage automatique, lui fournit des données géolocalisées. Elles optimisent en temps réel le chantier de récolte et serviront plus tard, via des cartes de rendements ou de préconisation, à optimiser son travail pour trouver la juste dose au bon endroit et au bon moment. Reportage.**
+
+29 juillet, Ormoy la Rivière, Beauce. Seul, dans sa cabine à trois mètres au
+dessus des blés, Mathieu Imbault pilote la bête à l’aide de ses trois écrans.
+Il touche à peine le volant. Monstre de précision, assistée d’un guidage gps
+d’une minutie de géomètre, la moissonneuse-batteuse suit automatiquement ses
+mêmes traces d’une récolte à une autre… En cet été inaccoutumé, les graines se
+font rares et rabougries. La récolte sera mauvaise pour Mathieu.  La
+moissonneuse n’en travaille que plus vite, avalant ses quintaux de blé. Dans
+son ventre, caméras et capteurs multiples suivent son transit… Qualité du
+grain, quantité, humidité, déclivité… L’information est enregistrée, transmise
+et digérée ; la machine s’adapte aux conditions de récolte, une incroyable
+intelligence technique. « Cette moissonneuse batteuse est truffée de plus de 1
+500 capteurs ! Elle possède un véritable système nerveux dans lequel circule
+une incroyable quantité de données ! Consommation en temps réel de carburant,
+vitesse de rotation et température du moteur, rendement de chaque mètre carré
+pour réaliser des cartographies de rendement… Toutes les 5 secondes des
+données sur son travail ou son environnement sont enregistrées »,
+s’enthousiasme Bruno Pierrefiche coordinateur des chefs produit Tracteurs et
+Nouvelles technologies  de l’équipementier CLAAS, venu ce jour là sur
+l’exploitation.  « Le développement des TIC en agriculture ont accompagné
+l’essor d’une mécanique de précision ; les composants mécaniques intègrent de
+plus en plus d’électronique, automatisant leur pilotage, facilitant la
+détection de pannes et les opérations de maintenances. La machine s’optimise
+toute seule, minimise les risques d’erreurs humaines sans supprimer l’humain,
+simplifie le travail. Reliée à internet, la machine renseigne en permanence de
+ce qu’elle fait ou de ce qu’elle observe » analyse Gilbert Grenier, professeur
+d’automatique et génie des équipements à Bordeaux Sciences Agro.
+
+## Parler ensemble sur place et à emporter
+
+Ces informations collectées par les machines améliorent les interventions sur
+place, comme le capteur Crop Sensor. Nouveauté proposée cette année par CLAAS,
+cette rampe fixée à l’avant du tracteur analyse la chlorophylle des plantes et
+en déduit les besoins des plantes en azote. Transmettant ces informations au
+distributeur d’engrais connecté, cet outil module des applications de
+fertilisants à l’intérieur d’une même parcelle. « La collecte des données
+n’est pas nouvelle : cela fait 20 ans qu’on est capable de cartographier
+l’hétérogénéité des rendements sur une parcelle. Mais elles étaient jusqu’à
+présent traitées « manuellement » au bureau. Depuis une dizaine d’années,
+l’ensemble des équipementiers agricoles s’est doté d’un langage informatique
+commun (norme ISOBUS). Tracteurs, distributeurs d’engrais, pulvérisateurs,
+presses, semoirs… Aujourd’hui, tous les nouveaux matériels peuvent être
+géolocalisés, connectés et dialoguent entre eux », explique Bruno Pierrefiche.
+
+Des tracteurs plus intelligents… Et plus chers ? Non, répond le constructeur,
+pour qui ce ne sont pas les capteurs embarqués qui chargent le plus le prix
+des machines mais la réponse aux normes antipollutions. Mathieu Imbault estime
+qu’avec ses machines intelligentes et l’automatisation du guidage, il peut
+gagner jusqu’à 10% de temps sur la conduite de tracteur et réduire de 5%
+d’utilisations d’intrants (engrais, pesticides, graines). Une évolution plus
+qu’une révolution ? Pour ce céréalier, le numérique optimise son travail mais
+la révolution promise se fait encore attendre.
+
+
+
+### Des nez embarqués sur le tracteur ?
+
+Des capteurs de plus en plus miniatures, perfectionnés par des technologies
+nouvelles (fréquences terahertz, imagerie thermiques…) issues d’autres
+domaines, permettront de détecter précocement des maladies ou les stress des
+plantes. Des nez électroniques humant les particules dans l’air pourraient
+ainsi détecter l’arrivée de virus ou de spores, cellules de champignons, bien
+avant le déclanchement des maladies de plantes.  
+  
+---  
+  
+
+
